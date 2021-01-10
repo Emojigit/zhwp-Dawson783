@@ -6,12 +6,13 @@ def token(S,ttype):
         'action':"query",
         'meta':"tokens",
         'type':ttype,
-        'format':"json"
+        'format':"json",
+        'curtimestamp':True,
         }
     R = S.get(url=URL, params=PARAMS_0)
     DATA = R.json()
     LOGIN_TOKEN = DATA['query']['tokens']['logintoken']
-    return LOGIN_TOKEN
+    return [LOGIN_TOKEN,DATA["curtimestamp"]]
 
 def login(S,token,uname,passwd): # require "login" type token
     PARAMS_1 = {
@@ -51,13 +52,26 @@ def getpage(S,title): # no token required
     except KeyError:
         return DATA["query"]["pages"]["revisions"]["slots"]["main"]
 
-def edit(S,token,title,content): # csrf token required, WIP
+def edit(S,token,title,content,summary,bot,createonly): # csrf token required
     PARAMS_3 = {
         "action": "edit",
         "title": title,
         "token": token,
         "format": "json",
         "text": content,
+        "summary":"Edit via API: "+summary,
+        "bot":bot,
+        "createonly":createonly,
     }
     R = S.post(URL, data=PARAMS_3)
     DATA = R.json()
+    # DATA["error"]["code"] have error code
+    # first check DATA["edit"]["result"]
+    try:
+        if DATA["edit"]["result"] == "Success":
+            return True
+        else:
+            raise KeyError
+    except KeyError:
+        print("Error while edit: "+DATA["error"]["code"])
+        return False

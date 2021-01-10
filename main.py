@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-#from modules import mediawiki
+from modules import mediawiki as mw
 from modules import emojiapp_config as ec
-import csv, sys, os
+import csv, sys, os, time
 exit = sys.exit
 ecname = "dawson783"
 S = requests.Session()
+csvpath = ec.get_root(ecname)+'/articles.csv'
 
 def merge_two_dicts(x, y): # Backward compatibility
     z = x.copy()   # start with x's keys and values
@@ -13,7 +14,6 @@ def merge_two_dicts(x, y): # Backward compatibility
     return z
 
 def get_content():
-    csvpath = ec.get_root(ecname)+'/articles.csv'
     ret = {}
     try:
         with open(csvpath, newline='') as csvfile:
@@ -38,3 +38,23 @@ def get_content():
         ret = merge_two_dicts(ret, {title:text})
         count = count + 1
     return ret
+
+def run()
+    uname = input("Please enter your bot username: ")
+    passwd = input("Please enter your bot password: ")
+    lgtoken = mw.token(S,"login")[0]
+    lgstatus = mw.login(S,lgtoken,uname,passwd)
+    if lgstatus == False
+        print("error while login")
+        exit(1)
+    del passwd
+    tmp = input("Please confirm `"+csvpath+"` have right content, then press enter to continue...")
+    data = get_content()
+    for title, content in data.items():
+        time.sleep(5)
+        etokenDATA = mw.token(S,"csrf")
+        if etokenDATA == False:
+            print("error while getting token to edit "+title)
+            continue
+        etoken = etokenDATA[0]
+        mw.edit(S,etoken,title,content,"Auto creating [[WP:IOWA]] articles via [[https://zh.wikipedia.org/wiki/User:SickManWP/沙盒/9]]",True,True)
