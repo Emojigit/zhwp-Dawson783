@@ -58,3 +58,6 @@ def run()
             continue
         etoken = etokenDATA[0]
         mw.edit(S,etoken,title,content,"Auto creating [[WP:IOWA]] articles via [[https://zh.wikipedia.org/wiki/User:SickManWP/沙盒/9]]",True,True)
+
+if __name__ == '__main__':
+    run()
