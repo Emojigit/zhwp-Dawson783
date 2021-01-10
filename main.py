@@ -24,7 +24,7 @@ def get_content():
     count = 1
     for row in rows:
         # IndexError
-        text = "{{User:SickManWP/沙盒/9"
+        text = "{{subst:User:SickManWP/沙盒/9"
         try:
             for x in range(24):
                 text = text + "|" + str(row[x])
